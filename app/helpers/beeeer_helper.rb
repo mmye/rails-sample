@@ -1,0 +1,2 @@
+module BeeeerHelper
+end
