@@ -133,7 +133,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.13.1)
-    mysql2 (0.4.10)
+    mysql2 (0.3.18)
     net-http-digest_auth (1.4.1)
     net-http-persistent (2.9.4)
     nokogiri (1.8.2)
@@ -271,7 +271,7 @@ DEPENDENCIES
   jquery-rails
   kaminari
   mechanize
-  mysql2 (>= 0.3.13, < 0.5)
+  mysql2 (= 0.3.18)
   nokogiri
   paperclip
   pry-rails

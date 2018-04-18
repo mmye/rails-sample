@@ -37,12 +37,12 @@ class Scraper
 		info[:price] = html.css('span.a-size-base.a-color-price.s-price.a-text-bold').inner_text
 		info[:price].gsub!(/[\s￥,]/,"")
 		/(\d+)本/.match(info[:item_name])
-		info[:price_per_can] = $1
+		info[:price_per_can] = info[:price].quo($1).round
 		return info
 	end
 
 	def self.save_to_db(info)
-		beer = Beeeer.where(item_name: info[:item_name], image_url: info[:image_url]).first_or_initialize
+		beer = Beeeer.where(item_name: info[:item_name], image_url: info[:image_url], price: info[:price]).first_or_initialize
 		beer.image_url = info[:image_url] if info[:image_url]
 		# beer.product_url = info[:product_url] if info[:product_url]
 		beer.price = info[:price] if info[:price]
