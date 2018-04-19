@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180418091246) do
+ActiveRecord::Schema.define(version: 20180419031309) do
 
   create_table "beeeers", force: :cascade do |t|
     t.string   "item_name",     limit: 255
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20180418091246) do
     t.integer  "price_per_can", limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "product_url",   limit: 255
+    t.text     "product_url",   limit: 65535
   end
 
 end
