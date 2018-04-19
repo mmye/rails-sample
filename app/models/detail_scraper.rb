@@ -28,10 +28,9 @@ class Detail_scraper
 			next_url = next_link.get_attribute(:href) 
 		end
 
-		binding.pry
 		links.each do |link|
 			details = get_details(link)
-#			save_to_db(details)
+			save_to_db(details)
 		end
 	end
 
@@ -44,16 +43,21 @@ class Detail_scraper
 		labels.each do |l|
 			case l.inner_text
 			when "ブランド"
-				details[:brand] = l.at('td.value').inner_text 
-				details[:brand2] = l.next.inner_text # 簡潔な書き方 
-				puts details[:brand]
-				puts details[:brand2]
-#				details[:weight] =
-#				details[:package_dim] = 
-#				details[:origin] = 
-#				# details[:quantity] = 
-#				details[:manufacturer_name] = 
-#				details[:package_type] = 
+				details[:brand] = l.next.inner_text
+			when "アルコール度数"
+				details[:alcohol_by_degree] = l.next.inner_text
+			when "メーカー名"
+				details[:manufacturer_name] = l.next.inner_text
+			when "容器の種類"
+				details[:package_type] = l.next.inner_text
+			when "梱包サイズ"
+				details[:package_dim] = l.next.inner_text
+			when "商品重量"
+				details[:weight] = l.next.inner_text
+			when "原産国名"
+				details[:origin] = l.next.inner_text
+			when "商品説明"
+				details[:description] = l.next.inner_text
 			else
 				
 			end
@@ -63,11 +67,15 @@ class Detail_scraper
 	end
 
 	def self.save_to_db(details)
-		beer = Product_details.where(item_name: details[:item_name], image_url: details[:image_url], price: details[:price]).first_or_initialize
-		beer.image_url = details[:image_url] if details[:image_url]
-		beer.product_url = details[:product_url] if details[:product_url]
-		beer.price = details[:price] if details[:price]
-		beer.price_per_can = details[:price_per_can] if details[:price_per_can]
+		beer = ProductDetail.where(item_name: details[:item_name], brand: details[:brand]).first_or_initialize
+		beer.brand = details[:brand] if details[:brand]
+		beer.alcohol_by_degree = details[:alcohol_by_degree] if details[:alcohol_by_degree]
+		beer.manufacturer_name = details[:manufacturer_name] if details[:manufacturer_name]
+		beer.package_type = details[:package_type] if details[:package_type]
+		beer.package_dim = details[:package_dim] if details[:package_dim]
+		beer.weight = details[:weight] if details[:weight]
+		beer.origin = details[:origin] if details[:origin]
+		beer.description = details[:description] if details[:description]
 		beer.save
 	end
 end
