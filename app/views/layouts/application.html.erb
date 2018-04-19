@@ -18,6 +18,11 @@
               <li class="logo" style="float: left">
                 <a href="/">Beeeer</a>
               </li>
+              <li>
+                <%= form_tag('/beeeer/search', method: :get) do %>
+                  <input class="search__query" name="keyword" placeholder="キーワード検索" type="text" value=""><button class="btn-search" title="検索" type="submit"></button></input>
+                <% end %>
+              </li>
             </ul>
           </div>
         </nav>
