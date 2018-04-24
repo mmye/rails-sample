@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class="pc" lang="ja" xmlns:fb="http://ogp.me/ns/fb#" xmlns:og="http://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+      <title>ビールレビューサイト</title>
+      <link href='http://fonts.googleapis.com/css?family=Signika:700,300,400,600' rel='stylesheet' type='text/css'>
+			<%= stylesheet_link_tag    "application", media: "all", "data-turbolin    ks-track" => true %>
+			<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+      <%= csrf_meta_tags %>
+			<%= include_gon %>
+    </meta>
+  </head>
+  <body class="yj950-2">
+    <div id="wrapper">
+      <div id="yjContentsHeader">
+        <nav class="globalnav">
+          <div class="globalnav__menu">
+            <ul class="gmenu">
+              <li class="logo" style="float: left">
+                <a href="/">Beer</a>
+              </li>
+              <li class="logo" style="float: left">
+                <%= form_tag('/beeeer/search', method: :get) do %>
+                  <input class="search__query" name="keyword" placeholder="キーワード検索" type="text" value=""><button class="btn-search" title="検索" type="submit"></button></input>
+                <% end %>
+              </li>
+              <li class="entry_button" style="float: right">
+                <a href="/beeeer./search">投稿する</a>
+              </li>
+							<% if user_signed_in? %>
+	              <li class="entry_button" style="float: right">
+									<%= link_to "マイページ", "/users/#{current_user.id}" %>
+ 	              </li>
+	              <li class="entry_button" style="float: right">
+									<%= link_to "ログアウト", destroy_user_session_path, data: { confirm: 'ログアウトしますか？' } %>
+ 	              </li>
+							<% else %>
+	              <li class="entry_button" style="float: right">
+									<%= link_to "ログイン", new_user_session_path %>
+ 	              </li>
+							<% end %>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="bgcolor-white pt1em pb1em" id="contents">
+        <%= yield %>
+          <aside class="section">
+            <h4 class="text-small hr-bottom--thin no-space-bottom">
+              <i class="icon-crown color-gray-light"></i>人気ランキング
+            </h4>
+            <ul class="listview listview--condensed text-small">
+              <% @ranking.each.with_index(1) do |beeeer,i| %>
+              <li data-cinema-id="<%= beeeer.id %>">
+                <a href="/beeeer/<%= beeeer.id %>/">
+                  <div class="box">
+                    <div class="box__cell w40 align-center">
+                      <p class="label bgcolor-gray-lighter align-center">
+                        <%= i %>
+                      </p>
+                    </div>
+                    <div class="box__cell pl1em">
+                      <p class="text-xsmall no-space">
+                        <%= beeeer.item_name %>
+                      </p>
+                      <img src="<%= beeeer.image_url %>" alt="<% beeeer.item_name %>">
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <% end %>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <div class="copyright">
+          Copyright (C) 2018 beer drunker  All Rights Not Reserved.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

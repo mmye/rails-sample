@@ -13,7 +13,7 @@
               <ul class="thumbnails thumbnail--movies row grid4 js-lazy-load-images js-my-check-stats" id="list-module">
 								<% @beers.each do |beer| %>
 		                <li class="col">
-		                  <a href="/product_detail/<%= beer.id %>"><div class="thumbnail__figure" style="background-image:url('<%= beer.image_url %>')"></div></a>
+		                  <a href="/beeeer/<%= beer.id %>"><div class="thumbnail__figure" style="background-image:url('<%= beer.image_url %>')"></div></a>
 		                  <div class="thumbnail__caption">
 		                    <h3 class="text-xsmall text-overflow" title="タイトル">
 												<% if beer.present? %>

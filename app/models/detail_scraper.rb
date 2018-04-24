@@ -1,4 +1,4 @@
-class Detail_scraper
+class Detail_scraper < BeeeerController
 	BASE_URL = 'https://www.amazon.co.jp'
 	SEARCH_URL = 'https://www.amazon.co.jp/b?node=71598051'
 
@@ -13,7 +13,11 @@ class Detail_scraper
 			current_page = agent.get(SEARCH_URL)  
 			beers = current_page.search('div.s-item-container')
 			beers.each do |beer|
-				links << beer.at('a').get_attribute(:href)
+        info = get_meta(beer)
+        row = save_to_db_meta(info)
+				link = beer.at('a').get_attribute(:href)
+        details = get_details(link)
+        save_to_db(details, row.id)
 			end
 
 			# 次ページへのタグを取得
@@ -23,14 +27,9 @@ class Detail_scraper
 			# next_linkがなかったらwhileを抜ける
 			break unless next_link
 			# 10ページ以上みたら抜ける
-			break if page_count >= 10
+			break if page_count >= 20
 
 			next_url = next_link.get_attribute(:href) 
-		end
-
-		links.each do |link|
-			details = get_details(link)
-			save_to_db(details)
 		end
 	end
 
@@ -59,15 +58,13 @@ class Detail_scraper
 			when "商品説明"
 				details[:description] = l.next.inner_text
 			else
-				
 			end
 		end
-
-		return details
+    return details
 	end
 
-	def self.save_to_db(details)
-		beer = ProductDetail.where(item_name: details[:item_name], brand: details[:brand]).first_or_initialize
+	def self.save_to_db(details, beeeer_id)
+		beer = ProductDetail.where(beeeer_id: beeeer_id).first_or_initialize
 		beer.brand = details[:brand] if details[:brand]
 		beer.alcohol_by_degree = details[:alcohol_by_degree] if details[:alcohol_by_degree]
 		beer.manufacturer_name = details[:manufacturer_name] if details[:manufacturer_name]
@@ -77,5 +74,33 @@ class Detail_scraper
 		beer.origin = details[:origin] if details[:origin]
 		beer.description = details[:description] if details[:description]
 		beer.save
+	end
+
+	def self.get_meta(html)
+		info = {}
+		info[:item_name] = html.css('h2.a-size-base.s-inline.s-access-title.a-text-normal').inner_text
+		info[:image_url] = html.at('img.s-access-image.cfMarker').get_attribute(:src)
+		info[:product_url] = html.at('a').get_attribute(:href)
+		info[:price] = html.css('span.a-size-base.a-color-price.s-price.a-text-bold').inner_text
+		info[:price].gsub!(/[\s￥,]/,"")
+		/(\d+)本/.match(info[:item_name])
+		price_i = info[:price].to_i
+
+		if price_i == nil
+			info[:price_per_can] = nil
+		else
+			# info[:price_per_can] = price_i.quo($1).round
+		end
+		return info
+	end
+
+	def self.save_to_db_meta(info)
+		beer = Beeeer.where(item_name: info[:item_name], image_url: info[:image_url], price: info[:price]).first_or_initialize
+		beer.image_url = info[:image_url] if info[:image_url]
+		beer.product_url = info[:product_url] if info[:product_url]
+		beer.price = info[:price] if info[:price]
+		beer.price_per_can = info[:price_per_can] if info[:price_per_can]
+		beer.save
+    return beer
 	end
 end

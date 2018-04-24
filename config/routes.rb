@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-	root 'beeeer#index'
-
+	devise_for :users
 	get 'beeeer/search' => 'beeeer#search'
-	resources :beeeer, only: [:index, :show]
-
-	resources :product_detail, only: [:show]
+	resources :users, only: :show
+	resources :beeeer, only: [:index, :show] do
+		resources :reviews
+	end
+	root 'beeeer#index'
+	
 end 
