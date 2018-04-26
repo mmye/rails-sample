@@ -20,7 +20,7 @@
 								<a href="<%= @beer.product_url %>">Amazon.co.jp</a>
 							</div>
               <div style="text-align: right">
-								<a href="/beeeer/<%= @beer.id %>/reviews/new">レビューを書く</a>	
+								<a href="/beeeer/<%= @beer.id %>/reviews/new">レビューを書く</a>
               </div>
               <header class="header header--section">
                 <h2 class="text-middle">
@@ -50,8 +50,8 @@
 							<% @beer.reviews.each do |review| %>
                 <li style="border-bottom: dotted 1px">
                   <div class="thumbnail__caption">
-                    <h3 class="text-xsmall text-overflow" title="<%= current_user.nickname %>">
-                      </span><%= current_user.nickname %><small 2014=""></small>
+                    <h3 class="text-xsmall text-overflow" title="<%= review.user.nickname %>">
+                      </span><%= review.user.nickname %><small 2014=""></small>
                     </h3>
                     <p class="text-small">
                       <span class="rating-star"><i class="star-actived rate-<%= review.rate %>0"></i></span>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180424033705) do
+ActiveRecord::Schema.define(version: 20180426052455) do
 
   create_table "beeeers", force: :cascade do |t|
     t.string   "item_name",     limit: 255
@@ -38,6 +38,16 @@ ActiveRecord::Schema.define(version: 20180424033705) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer  "beeeer_id",  limit: 4, null: false
+    t.integer  "user_id",    limit: 4, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "likes", ["beeeer_id"], name: "fk_rails_16defe289f", using: :btree
+  add_index "likes", ["user_id"], name: "fk_rails_1e09b5dabf", using: :btree
 
   create_table "product_details", force: :cascade do |t|
     t.string   "brand",             limit: 255
@@ -96,6 +106,10 @@ ActiveRecord::Schema.define(version: 20180424033705) do
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
     t.string   "nickname",               limit: 255
+    t.string   "avatar_file_name",       limit: 255
+    t.string   "avatar_content_type",    limit: 255
+    t.integer  "avatar_file_size",       limit: 4
+    t.datetime "avatar_updated_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -103,4 +117,6 @@ ActiveRecord::Schema.define(version: 20180424033705) do
 
   add_foreign_key "hashtag_beeeers", "beeeers"
   add_foreign_key "hashtag_beeeers", "hashtags"
+  add_foreign_key "likes", "beeeers"
+  add_foreign_key "likes", "users"
 end

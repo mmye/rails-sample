@@ -26,4 +26,8 @@ class ReviewsController < BeeeerController
 		@beer = Beeeer.find(params[:beeeer_id])
 		gon.beer_tags= @beer.tag_list
 	end
+
+	def set_available_tags_to_gon
+		gon.available_tags = Beeeer.tags_on(:tags).pluck(:name)
+	end
 end

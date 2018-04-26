@@ -7,7 +7,7 @@
             <div class="container">
               <header class="header header--section">
                 <h2 class="text-middle">
-                  <i class="icon-movie color-gray-light"></i>ビール一覧
+                  ビール一覧
                 </h2>
               </header>
               <ul class="thumbnails thumbnail--movies row grid4 js-lazy-load-images js-my-check-stats" id="list-module">
@@ -21,19 +21,24 @@
 												<% else %>
 		                      <span><i class="icon-rate-00 text-xxsmall opacity-60" title=""></i></span><%= beer.item_name %></h3>
 												<% end %>
-												￥ <%= beer.price %> 
+												￥ <%= beer.price %>
+                        <% if current_user.already_liked?(beer) %>
+													<div class="like-button">
+															<%=  image_tag "liked.png", size: "15x15" %>
+															<div class="like-sum"><%= likes_count(beer.id)  %></div>
+													</div>		
+                        <% else %>
+													<div class="like-button">
+															<%=  image_tag "unliked.png", size: "15x15" %>
+															<div class="like-sum"><%= likes_count(beer.id)  %></div>
+													</div>		
+                          <%= form_for [beer, @like], remote: true do |f| %>
+                            <%= f.submit 'いいね' %>
+                          <% end %>
+                        <% end %>
 												<% if beer.price_per_can.present? %>
 													(￥ <%= beer.price_per_can %> / 本)
 												<% end %>
-		                    <p class="text-small">
-		                      <span class="rating-star">
-														<% if beer.present? %>
-			                        <i class="star-actived rate-00"></i>
-														<% else %>
-			                        <i class="star-actived rate-00"></i>
-														<% end %>
-		                      </span>
-		                    </p>
 												<a href="<%= beer.product_url %>">Amazon.co.jp</a>
 		                  </div>
 		                </li>

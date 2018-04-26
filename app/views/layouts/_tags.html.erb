@@ -1,0 +1,6 @@
+<% if tags.present? %>
+  <% tags.each do |tag| %>
+  	<%= tag.name %>
+  	(<%= tag.taggings_count %>)
+  <% end %>
+<% end %>

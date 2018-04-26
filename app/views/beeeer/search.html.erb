@@ -7,7 +7,7 @@
             <div class="container">
               <header class="header header--section">
                 <h2 class="text-middle">
-                  <i class="icon-movie color-gray-light"></i>検索結果（<%= @beers.count %>件）
+                  <%= @keyword %>の検索結果（<%= @beers.count %>件）
                 </h2>
               </header>
               <ul class="thumbnails thumbnail--movies row grid4 js-lazy-load-images js-my-check-stats" id="list-module">
@@ -25,15 +25,6 @@
 												<% if beer.price_per_can.present? %>
 													(￥ <%= beer.price_per_can %> / 本)
 												<% end %>
-		                    <p class="text-small">
-		                      <span class="rating-star">
-														<% if beer.present? %>
-			                        <i class="star-actived rate-00"></i>
-														<% else %>
-			                        <i class="star-actived rate-00"></i>
-														<% end %>
-		                      </span>
-		                    </p>
 												<a href="<%= beer.product_url %>">Amazon.co.jp</a>
 		                  </div>
 		                </li>

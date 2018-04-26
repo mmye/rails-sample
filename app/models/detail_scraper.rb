@@ -4,32 +4,35 @@ class Detail_scraper < BeeeerController
 
 	def self.get_beer_detail
 		agent = Mechanize.new
-		page = agent.get(SEARCH_URL) # スタートURL
+		current_page = agent.get(SEARCH_URL) # スタートURL
 		links = []
 		next_url = ""
 		page_count = 0
 
 		while true do
-			current_page = agent.get(SEARCH_URL)  
 			beers = current_page.search('div.s-item-container')
 			beers.each do |beer|
         info = get_meta(beer)
         row = save_to_db_meta(info)
 				link = beer.at('a').get_attribute(:href)
+        sleep(5)
         details = get_details(link)
         save_to_db(details, row.id)
 			end
 
 			# 次ページへのタグを取得
 			next_link = current_page.at('#pagnNextLink')
-			page_count += 1 		
+			page_count += 1
 
 			# next_linkがなかったらwhileを抜ける
 			break unless next_link
 			# 10ページ以上みたら抜ける
 			break if page_count >= 20
 
-			next_url = next_link.get_attribute(:href) 
+			sleep(10)
+			next_url = next_link.get_attribute(:href)
+			binding.pry
+			target_page = agent.get(BASE_URL + next_url)
 		end
 	end
 

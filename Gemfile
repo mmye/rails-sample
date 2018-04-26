@@ -43,6 +43,10 @@ group :development do
 	gem 'rspec-rails'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  # エラー画面をわかりやすく整形してくれる
+  gem 'better_errors'
+  # better_errorsの画面上にirb/pry(PERL)を表示する
+  gem 'binding_of_caller'
 end
 
 gem 'kaminari'
@@ -52,8 +56,8 @@ gem 'pry-rails'
 gem 'devise'
 gem 'paperclip'
 gem 'therubyracer'
-gem 'twitter-bootstrap-rails', '3.2.2'
-gem 'bootstrap-material-design', '0.1.4'
+gem 'sprockets-rails'
+gem 'bootstrap-sass', '3.2.0.0'
 gem 'acts-as-taggable-on', '~> 3.4'
 gem 'jquery-ui-rails'
 gem 'gon'
