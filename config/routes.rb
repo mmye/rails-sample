@@ -4,9 +4,10 @@ Rails.application.routes.draw do
 	get 'beeeer/search' => 'beeeer#search'
 	resources :users, only: :show
 
-	resources :beeeer, only: [:index, :show] do
+	resources :beeeer, only: [:index, :show], constraints: { id: /\d+/ } do
 		resources :likes, only: [:create, :destroy]
-		resources :reviews
+		resources :reviews, only: [:update, :destroy, :new, :create]
 	end
-	
-end 
+	get 'beeeer/:tag_name', to: 'beeeer#tag', as: 'tag'
+
+end

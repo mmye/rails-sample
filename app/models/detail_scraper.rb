@@ -1,10 +1,16 @@
 class Detail_scraper < BeeeerController
 	BASE_URL = 'https://www.amazon.co.jp'
-	SEARCH_URL = 'https://www.amazon.co.jp/b?node=71598051'
+	# SEARCH_URL = 'https://www.amazon.co.jp/b?node=71598051'
+	SEARCH_URL = 'https://www.amazon.co.jp/gp/search/ref=sr_pg_3?rh=n%3A57239051%2Cn%3A71588051%2Cn%3A71589051%2Cn%3A71598051%2Ck%3A%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%BB%E3%83%9A%E3%83%BC%E3%83%AB%E3%82%A8%E3%83%BC%E3%83%AB&page=3&keywords=%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%82%A2%E3%83%BB%E3%83%9A%E3%83%BC%E3%83%AB%E3%82%A8%E3%83%BC%E3%83%AB&ie=UTF8&qid=1524812457'
 
 	def self.get_beer_detail
+		next_url = ''
 		agent = Mechanize.new
-		current_page = agent.get(SEARCH_URL) # スタートURL
+		if next_url == ''
+			current_page = agent.get(SEARCH_URL) # スタートURL
+			puts "searching #{SEARCH_URL}"
+		end
+
 		links = []
 		next_url = ""
 		page_count = 0
@@ -15,7 +21,8 @@ class Detail_scraper < BeeeerController
         info = get_meta(beer)
         row = save_to_db_meta(info)
 				link = beer.at('a').get_attribute(:href)
-        sleep(5)
+				links << link
+				sleep(120)
         details = get_details(link)
         save_to_db(details, row.id)
 			end
@@ -27,12 +34,12 @@ class Detail_scraper < BeeeerController
 			# next_linkがなかったらwhileを抜ける
 			break unless next_link
 			# 10ページ以上みたら抜ける
-			break if page_count >= 20
+			# break if page_count >= 10
 
-			sleep(10)
 			next_url = next_link.get_attribute(:href)
-			binding.pry
-			target_page = agent.get(BASE_URL + next_url)
+			current_page = agent.get(BASE_URL + next_url)
+			puts "page count: #{page_count}"
+			puts "searching #{BASE_URL}#{next_url}"
 		end
 	end
 

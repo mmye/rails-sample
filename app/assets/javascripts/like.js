@@ -1,5 +1,6 @@
-var $heart = $(".like-button img");
-$(".like-button").on("click", function(){
+//var $heart = $(".like-button");
+console.log("hi!");
+$("div.like-button").on("click", function(){
 	console.log("clicked to like!");
 	var $likeSum = $(this).next("div.like-sum").text();
 //  like_function(#{beer.id}, $(this), $heart, $likeSum)

@@ -1,11 +1,14 @@
   <div id="main_cnt_wrapper">
     <div id="yjContentsBody">
       <div class="yjContainer">
-        <span class="yjGuid"><a id="yjContentsStart" name="yjContentsStart"></a><img alt="ここから本文です" height="1" src="http://i.yimg.jp/yui/jp/tmpl/1.1.0/audionav.gif" width="1"></span>
+        <span class="yjGuid"><a id="yjContentsStart" name="yjContentsStart"></a><img alt="" height="1" src="http://i.yimg.jp/yui/jp/tmpl/1.1.0/audionav.gif" width="1"></span>
         <div id="yjMain">
           <article class="section">
             <div class="container">
               <header class="header header--section">
+                <h2 class="text-middle">
+                  <%= @tag_name %>のビール
+                </h2>
               </header>
               <ul class="thumbnails thumbnail--movies row grid4 js-lazy-load-images js-my-check-stats" id="list-module">
 								<% @beers.each do |beer| %>
@@ -22,13 +25,13 @@
                         <% if current_user.already_liked?(beer) %>
 													<div class="like-button">
 															<%=  image_tag "liked.png", size: "15x15" %>
-															<span class="like-sum"><%= likes_count(beer.id)  %></span>
+															<div class="like-sum"><%= likes_count(beer.id)  %></div>
 													</div>
                         <% else %>
 													<div class="like-button">
 															<%=  image_tag "unliked.png", size: "15x15" %>
-															<span class="like-sum"><%= likes_count(beer.id)  %></span>
-													</div>		
+															<div class="like-sum"><%= likes_count(beer.id)  %></div>
+													</div>
                           <%= form_for [beer, @like], remote: true do |f| %>
                             <%= f.submit 'いいね' %>
                           <% end %>

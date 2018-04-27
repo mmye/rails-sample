@@ -48,10 +48,10 @@
         <%= yield %>
           <aside class="section">
             <h4 class="text-small hr-bottom--thin no-space-bottom">
-              <i class="icon-crown color-gray-light"></i>人気ランキング
+              人気ランキング
             </h4>
             <ul class="listview listview--condensed text-small">
-              <% @ranking.each.with_index(1) do |beeeer,i| %>
+              <% @like_ranking.each.with_index(1) do |beeeer,i| %>
               <li data-cinema-id="<%= beeeer.id %>">
                 <a href="/beeeer/<%= beeeer.id %>/">
                   <div class="box">
@@ -72,10 +72,16 @@
               <% end %>
             </ul>
           </aside>
-					<aside id="tags">
-						<%= render partial: 'layouts/tags', locals: { tags:  @tags } %>
-					</aside>
 					<aside id="tagClouds">
+            <h4 class="text-small hr-bottom--thin no-space-bottom">
+              Categories
+            </h4>
+            <% if params[:controller] == 'beeeer' %>
+              <% tag_cloud @tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+                 <!-- <%= link_to(tag.name, { :action => :tag, :tag_name => tag.name }, :class => css_class) %> -->
+                 <%= link_to(tag.name, tag_path(tag.name), :class => css_class) %>
+              <% end %>
+            <% end %>
 					</aside>
         </div>
       </div>
